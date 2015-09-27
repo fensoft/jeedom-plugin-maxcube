@@ -2,7 +2,7 @@
 <info>
     <id>maxcube</id>
     <name>MaxCube</name>
-    <description>Plugin maxcube - Permet de se connecter au Max! Cube (ELV/eQ-3/Conrad)</description>
+    <description>Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV/eQ-3/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.</description>
     <icon>fa fa-refresh</icon>
     <licence>proprietary</licence>
     <author>fensoft</author>
