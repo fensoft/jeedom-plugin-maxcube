@@ -13,7 +13,7 @@ try {
     }
     
     if (init('action') == 'mainConfigSave') {
-      maxcube::startDaemon();
+      maxcube::restartDaemon();
       ajax::success();
     }
     

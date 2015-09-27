@@ -30,6 +30,19 @@ class maxcube extends eqLogic {
         self::startDaemon();
     }
     
+    public static function restartDaemon() {
+      self::stopDaemon();
+      self::startDaemon();
+    }
+    
+    public static function stopDaemon() {
+      if (self::pid() != 0) {
+        $cmd = "kill " . self::pid();
+        log::add('maxcube', 'debug', $cmd);
+        shell_exec($cmd);
+      }
+    }
+    
     public static function startDaemon() {
       $path = realpath(dirname(__FILE__) . '/../..');
       $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api') . "&type=maxcube&method=update";
