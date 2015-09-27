@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>maxcube</id>
+    <name>MaxCube</name>
+    <description>Plugin maxcube - Permet de se connecter au Max! Cube (ELV/eQ-3/Conrad)</description>
+    <icon>fa fa-refresh</icon>
+    <licence>proprietary</licence>
+    <author>fensoft</author>
+    <installation>Aucune</installation>
+    <require>1.136</require>
+    <category>automation protocol</category>
+    <allowRemote>1</allowRemote>
+</info>
+

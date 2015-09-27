@@ -1,0 +1,9 @@
+= Aide du plugin maxcube
+
+== Installation
+
+* Configurer l'addresse IP du Max!Cube dans la page de configuration du plugin.
+
+* Ajoutez des périphériques dans la liste "Objet MaxCube", cliquez sur sauvegarder.
+
+C'est tout !
