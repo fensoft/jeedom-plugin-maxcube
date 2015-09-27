@@ -7,7 +7,7 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class maxcube extends eqLogic {
-    public static $_devicetypes = array("1" => "RT", "3" => "WT", "4" => "WS");
+    public static $_devicetypes = array("1" => "RT", "2" => "RT", "3" => "WT", "4" => "WS");
 
     public static function pid() {
       return trim( shell_exec ('ps ax | grep "node maxnodeserver.js" | grep -v "grep" | awk \'{print $1}\'') );
@@ -214,7 +214,7 @@ class maxcube extends eqLogic {
       if (!$elogic)
         return;
         
-      if (init("method") == "update") {
+      if (init("method") == "update" && init("property") != "lastUpdate") {
         log::add("maxcube", 'debug', "update " . init("rf_address") . " " . init("property") . " " . init("value"));
         switch (init("property")) {
           case "setpoint":
@@ -240,7 +240,8 @@ class maxcube extends eqLogic {
     }
     
     public static function getCubeConfig() {
-      return json_decode(file_get_contents("http://dom.lan:3000/get"), true);
+      $url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/get";
+      return json_decode(file_get_contents($url), true);
     }
     
     public static function setCubeSetpoint($rf_address, $value) {
@@ -248,7 +249,7 @@ class maxcube extends eqLogic {
       $device = self::getDevice($rf_address);
       if ($device["room_id"] != "")
         $rf_address = $cfg["rooms"][$device["room_id"]]["group_rf_address"];
-      return json_decode(file_get_contents("http://dom.lan:3000/set/" . $rf_address . "/" . $value), true);
+      return json_decode(file_get_contents("http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/set/" . $rf_address . "/" . $value), true);
     }
     
     public static function getRooms() {
@@ -271,6 +272,8 @@ class maxcube extends eqLogic {
       switch ($type) {
         case "1":
           return "[Radiateur]";
+        case "2":
+          return "[Radiateur+]";
         case "3":
           return "[Thermostat]";
         case "4":
@@ -282,6 +285,8 @@ class maxcube extends eqLogic {
     public static function typeToIcon($type) {
       switch ($type) {
         case "1":
+          return "techno-heating3";
+        case "2":
           return "techno-heating3";
         case "3":
           return "jeedom-thermometre";
