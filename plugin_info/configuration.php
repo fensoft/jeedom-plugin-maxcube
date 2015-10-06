@@ -27,9 +27,9 @@ if (!isConnect()) {
             </div>
         </div>
         <div class="form-group expertModeVisible">
-            <label class="col-lg-4 control-label">{{Port socket interne (3000 par défaut)}}</label>
+            <label class="col-lg-4 control-label">{{Port socket interne (7767 par défaut)}}</label>
             <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="socketport" value='3000' />
+                <input class="configKey form-control" data-l1key="socketport" value='7767' />
             </div>
         </div>
     </fieldset>

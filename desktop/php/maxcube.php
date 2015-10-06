@@ -98,13 +98,26 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                     <div class="col-sm-3">
                         <select id="sel_object" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="rf_address">
                             <option value="">{{Aucun}}</option>
-                            <?php
+<?php
 foreach (maxcube::getRooms() as $room) {
     echo '<option style="font-weight: bold;" value="">&#8594; ' . $room["room_name"] . ' &#8592; </option>';
     foreach ($room["devices"] as $device) {
 	echo '<option class="fa ' . maxcube::typeToIcon($device["devicetype"]) . '" style="display:block;" value="' . $device["rf_address"] . '">' . $room["room_name"] . "::" . $device["device_name"] . ' ' . maxcube::typeToString($device["devicetype"]) . '</option>';
   }
 }
+?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" >{{Thermostat}}</label>
+                    <div class="col-sm-3">
+                        <select id="sel_object" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="thermostat">
+                            <option value="">{{Aucun}}</option>
+<?php
+foreach(eqLogic::byType('thermostat') as $thermostat)
+  echo '<option value="' . $thermostat->getID() . '">' . $thermostat->getName() . '</option>';
 ?>
                         </select>
                     </div>
