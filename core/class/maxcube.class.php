@@ -26,11 +26,12 @@ class maxcube extends eqLogic {
   }
     
   public static function cron() {
-    if (self::pid() == 0)
+    if (self::pid() == 0 && config::byKey('daemon','maxcube') != "0")
       self::startDaemon();
   }
     
   public static function restartDaemon() {
+    config::save('daemon','1','maxcube');
     self::stopDaemon();
     self::startDaemon();
   }
@@ -40,6 +41,7 @@ class maxcube extends eqLogic {
       $cmd = "kill " . self::pid();
       log::add('maxcube', 'debug', $cmd);
       shell_exec($cmd);
+      config::save('daemon','0','maxcube');
     }
   }
     
