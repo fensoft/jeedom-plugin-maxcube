@@ -117,7 +117,7 @@ foreach (maxcube::getRooms() as $room) {
                             <option value="">{{Aucun}}</option>
 <?php
 foreach(eqLogic::byType('thermostat') as $thermostat)
-  echo '<option value="' . $thermostat->getID() . '">' . $thermostat->getName() . '</option>';
+  echo '<option value="' . $thermostat->getID() . '">' . $thermostat->getObject()->getName() . " - " . $thermostat->getName() . '</option>';
 ?>
                         </select>
                     </div>
