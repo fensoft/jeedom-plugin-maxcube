@@ -12,12 +12,18 @@ try {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
     
-    if (init('action') == 'restartDeamon') {
+    if (init('action') == 'restart') {
       maxcube::restartDaemon();
       ajax::success();
     }
     
-    if (init('action') == 'stopDeamon') {
+    if (init('action') == 'restartDebug') {
+      maxcube::stopDaemon();
+      maxcube::startDaemonDebug();
+      ajax::success();
+    }
+    
+    if (init('action') == 'stop') {
       maxcube::stopDaemon();
       ajax::success();
     }

@@ -52,6 +52,14 @@ class maxcube extends eqLogic {
     log::add('maxcube', 'debug', $cmd);
     shell_exec($cmd);
   }
+  
+  public static function startDaemonDebug() {
+    $path = realpath(dirname(__FILE__) . '/../..');
+    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api') . "&type=maxcube&method=update";
+    $cmd = "cd " . $path . "/3rdparty/maxcube && nohup bash daemon.sh service " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state > " . $path . "/../../log/maxcube_debug&";
+    log::add('maxcube', 'debug', $cmd);
+    shell_exec($cmd);
+  }
 
   static function applyEvent($_options) {
     $cmd = cmd::byId($_options["event_id"]);
