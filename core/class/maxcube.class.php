@@ -24,39 +24,64 @@ class maxcube extends eqLogic {
     );
     return $return;
   }
-    
-  public static function cron() {
-    if (self::pid() == 0 && config::byKey('daemon','maxcube') != "0")
-      self::startDaemon();
+
+  public static function dependancy_info() {
+		$return = array();
+		$return['log'] = 'maxcube_update';
+		$return['progress_file'] = '/tmp/maxcube_in_progress';
+		$state = '';
+    $v = str_replace("\n", "", shell_exec('node -v | sed "s/v//"'));
+    if (version_compare($v, "5.10.0") >= 0) {
+      $state = 'ok';
+    } else {
+      $state = 'nok';
+    }
+		$return['state'] = $state;
+		return $return;
+	}
+
+  public static function dependancy_install() {
+    if (file_exists('/tmp/maxcube_in_progress')) {
+      return;
+    }
+
+    log::remove('maxcube_update');
+    $cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../resources/install_maxcube.sh';
+    $cmd .= ' >> ' . log::getPathToLog('maxcube_update') . ' 2>&1 &';
+    exec($cmd);    
   }
+  
+  public static function deamon_info() {
+		$return = array();
+		$return['log'] = 'maxcube';
+    $return['launchable'] = 'ok';
+		if(self::pid() != 0)
+			$return['state'] = 'ok';
+		else
+      $return['state'] = 'nok';
+		return $return;
+	}
     
-  public static function restartDaemon() {
-    config::save('daemon','1','maxcube');
-    self::stopDaemon();
-    self::startDaemon();
-  }
-    
-  public static function stopDaemon() {
+  public static function deamon_stop() {
     if (self::pid() != 0) {
       $cmd = "kill " . self::pid();
       log::add('maxcube', 'debug', $cmd);
       shell_exec($cmd);
-      config::save('daemon','0','maxcube');
     }
   }
     
-  public static function startDaemon() {
+  public static function deamon_start() {
+    if (config::byKey('maxcube_ip', 'maxcube') == "" || config::byKey('maxcube_port', 'maxcube') == "" || config::byKey('socketport', 'maxcube') == "")
+      message::add("maxcube", " {{Erreur de configuration: cube non configuré}}");
+    if (network::getNetworkAccess('internal', 'proto:ip:port:comp') == "")
+      message::add("maxcube", " {{IP interne de jeedom non configurée}}");
+
     $path = realpath(dirname(__FILE__) . '/../..');
     $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api') . "&type=maxcube&method=update";
-    $cmd = "cd " . $path . "/3rdparty/maxcube && bash daemon.sh start " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state";
-    log::add('maxcube', 'debug', $cmd);
-    shell_exec($cmd);
-  }
-  
-  public static function startDaemonDebug() {
-    $path = realpath(dirname(__FILE__) . '/../..');
-    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api') . "&type=maxcube&method=update";
-    $cmd = "cd " . $path . "/3rdparty/maxcube && nohup bash daemon.sh service " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state > " . $path . "/../../log/maxcube_debug&";
+    $log = "/dev/null";
+    if (config::byKey('debug', 'maxcube') == "1")
+      $log = $path . "/../../log/maxcube_debug";
+    $cmd = "cd " . $path . "/resources/maxcube.js && bash daemon.sh start " . $log . " " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state ". config::byKey('debug', 'maxcube');
     log::add('maxcube', 'debug', $cmd);
     shell_exec($cmd);
   }
@@ -241,17 +266,6 @@ class maxcube extends eqLogic {
     maxcube::setCubeSetpoint($eqLogic->getConfiguration('rf_address'), $_options["value"]);
   }
   
-  public function preInsert() {}
-  public function postInsert() {}
-  public function preUpdate() {}
-  public function postUpdate() {}
-  public function preRemove() {}
-  public function postRemove() {}
-
-  public function toHtml($_version = 'dashboard') {
-    return eqLogic::toHtml($_version);
-  }
-  
   public static function getLogicFromAddress($rf_address) {
     foreach (self::all() as $elogic) {
       if ($elogic->getConfiguration("rf_address") == $rf_address)
@@ -295,6 +309,17 @@ class maxcube extends eqLogic {
           $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), "sensor");
           $statelogic->event(init("value") == "closed");
           break;
+        case "battery_low":
+          $elogic->batteryStatus(init("value") == "false" ? 100 : 0);
+          break;
+        case "error":
+          if (init("value") == "true")
+            message::add("maxcube", " {{Erreur avec le module}} " . $elogic->getObject()->getName() . "/" . $elogic->getName());
+          break;
+        case "link_error":
+          if (init("value") == "true")
+            message::add("maxcube", "{{Erreur de communication avec le module}} " . $elogic->getObject()->getName() . "/" . $elogic->getName());
+          break;
       }
     }
   }
@@ -331,13 +356,13 @@ class maxcube extends eqLogic {
   public static function typeToString($type) {
     switch ($type) {
       case "1":
-        return "[Radiateur]";
+        return "{{[Radiateur]}}";
       case "2":
-        return "[Radiateur+]";
+        return "{{[Radiateur+]}}";
       case "3":
-        return "[Thermostat]";
+        return "{{[Thermostat]}}";
       case "4":
-        return '[Ouverture]';
+        return '{{[Ouverture]}}';
     }
     return "[" . $type . "]";
   }

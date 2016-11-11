@@ -3,7 +3,9 @@
  * You can modify this file but you'll need to send to the author the modified files for future merging (or not, depending on the quality of your modifications)
  * You need to ask the permision of the author for redistribution/copying/forking
  */
- 
+
+header('Content-Type: application/json');
+
 try {
     require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
     include_file('core', 'authentification', 'php');
@@ -13,18 +15,8 @@ try {
     }
     
     if (init('action') == 'restart') {
-      maxcube::restartDaemon();
-      ajax::success();
-    }
-    
-    if (init('action') == 'restartDebug') {
-      maxcube::stopDaemon();
-      maxcube::startDaemonDebug();
-      ajax::success();
-    }
-    
-    if (init('action') == 'stop') {
-      maxcube::stopDaemon();
+      maxcube::deamon_stop();
+      maxcube::deamon_start();
       ajax::success();
     }
     

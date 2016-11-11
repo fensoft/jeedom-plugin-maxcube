@@ -1,0 +1,58 @@
+{
+    "plugins\/maxcube\/plugin_info\/info.xml": {
+        "Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV\/eQ-3\/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.": "Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV\/eQ-3\/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.",
+        "Aucune": "Aucune"
+    },
+    "plugins\/maxcube\/desktop\/php\/maxcube.php": {
+        "Ajouter un maxcube": "Ajouter un maxcube",
+        "Rechercher": "Rechercher",
+        "Mes périphériques Max!": "Mes périphériques Max!",
+        "Sauvegarder": "Sauvegarder",
+        "Supprimer": "Supprimer",
+        "Equipement": "Equipement",
+        "Commandes": "Commandes",
+        "Général": "Général",
+        "Nom de l'équipement maxcube": "Nom de l'équipement maxcube",
+        "Objet parent": "Objet parent",
+        "Aucun": "Aucun",
+        "Catégorie": "Catégorie",
+        "Activer": "Activer",
+        "Visible": "Visible",
+        "Objet MaxCube": "Objet MaxCube",
+        "[Thermostat]": "[Thermostat]",
+        "[Ouverture]": "[Ouverture]",
+        "[Radiateur]": "[Radiateur]",
+        "Thermostat": "Thermostat",
+        "MaxCube": "MaxCube",
+        "Nom": "Nom",
+        "Type": "Type",
+        "Logical ID (info) ou Commande brute (action)": "Logical ID (info) ou Commande brute (action)",
+        "Paramètres": "Paramètres",
+        "Options": "Options"
+    },
+    "plugins\/maxcube\/desktop\/js\/maxcube.js": {
+        "Icône": "Icône",
+        "La valeur de la commande vaut par défaut la commande": "La valeur de la commande vaut par défaut la commande",
+        "Aucune": "Aucune",
+        "Nom information": "Nom information",
+        "Rechercher équipement": "Rechercher équipement",
+        "Valeur retour d\\'état": "Valeur retour d\\'état",
+        "Durée avant retour d\\'état (min)": "Durée avant retour d\\'état (min)",
+        "Historiser": "Historiser",
+        "Afficher": "Afficher",
+        "Evénement": "Evénement",
+        "Inverser": "Inverser",
+        "Lifetime cache": "Lifetime cache",
+        "Commande d\\'information à mettre à jour": "Commande d\\'information à mettre à jour",
+        "Unité": "Unité",
+        "Min": "Min",
+        "Max": "Max",
+        "Tester": "Tester"
+    },
+    "plugins\/maxcube\/plugin_info\/configuration.php": {
+        "Général": "Général",
+        "IP du MaxCube": "IP du MaxCube",
+        "Port du MaxCube (62910 par défaut)": "Port du MaxCube (62910 par défaut)",
+        "Port socket interne (7767 par défaut)": "Port socket interne (7767 par défaut)"
+    }
+}

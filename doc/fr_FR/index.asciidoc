@@ -4,6 +4,14 @@ Ce plugin permet de récupérer les informations de température, référence et
 
 Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.
 
+== Comment configurer le plugin ?
+
+* S'assurer d'avoir un nodejs récent (supérieur à v5.10)
+* Le logiciel max! d'origine doit être eteint y compris dans la barre de notification windows (un seul logiciel ne peux se connecter simultanément au cube)
+* Remplir l'ip du plugin et les ports par défaut dans la page de configuration du plugin 
+* Ajouter le périphérique, bien choisir le bon "objet" associé au périphérique nouvellement ajouté image::../images/objet_maxcube.png[]
+* Si vous voulez associer un thermostat maxcube à un thermostat jeedom (du plugin thermostat): ../images/thermostat.png[]
+
 == Où acheter ?
 
 Ces devices sont livrés en kit "ARR" ou préfabriqué:
@@ -54,9 +62,3 @@ Sur chacun de ces devices, on peux récupérer:
 * Valve => Pourcentage d'ouverture de la valve, référence, dernière température envoyée (PAS TEMPS REEL, valeur lors du dernier déplacement de la valve)
 * Contacteur de fenêtre => fenêtre ouverte/fermée
 * Thermostat => référence, température ambiante temps réél
-
-== Todo:
-* Mode auto/manu sur les thermostat
-* Editeur de mode auto => NON
-* Valve "+" (nouveau modèle, j'ai que l'ancien modèle)
-* ecoswitch (je n'en ai pas)

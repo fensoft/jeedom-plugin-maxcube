@@ -33,79 +33,14 @@ if (!isConnect()) {
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label">{{Gestion du démon}}</label>
-            <div class="col-sm-8">
-                <a class="btn btn-success" id="bt_maxcube_restart"><i class='fa fa-play'></i> {{(Re)démarrer}}</a>
-                <a class="btn btn-success" id="bt_maxcube_restartDebug"><i class='fa fa-play'></i> {{(Re)démarrer en mode débug}}</a>
-                <a class="btn btn-danger" id="bt_maxcube_stop"><i class='fa fa-stop'></i> {{Arrêter}}</a>
+            <label class="col-sm-4 control-label">Mode debug</label>
+            <div class="col-sm-2">
+                <input type="checkbox" class="configKey" data-l1key="debug" checked="">
             </div>
         </div>
     </fieldset>
 </form>
 <script>
-    $('#bt_maxcube_restart').on('click', function () {
-        $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/maxcube/core/ajax/maxcube.ajax.php", // url du fichier php
-            data: {
-                action: "restart"
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-            if (data.state != 'ok') {
-                $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                return;
-            }
-            $('#div_alert').showAlert({message: '{{Le démon a été correctement (re)demarré}}', level: 'success'});
-        }
-    });
-    });
-    
-    $('#bt_maxcube_restartDebug').on('click', function () {
-        $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/maxcube/core/ajax/maxcube.ajax.php", // url du fichier php
-            data: {
-                action: "restartDebug"
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-            if (data.state != 'ok') {
-                $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                return;
-            }
-            $('#div_alert').showAlert({message: '{{Le démon a été correctement (re)demarré}}', level: 'success'});
-        }
-    });
-    });
-    
-    $('#bt_maxcube_stop').on('click', function () {
-        $.ajax({// fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "plugins/maxcube/core/ajax/maxcube.ajax.php", // url du fichier php
-            data: {
-                action: "stop"
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-                handleAjaxError(request, status, error);
-            },
-            success: function (data) { // si l'appel a bien fonctionné
-            if (data.state != 'ok') {
-                $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                return;
-            }
-            $('#div_alert').showAlert({message: '{{Le démon a été correctement arreté}}', level: 'success'});
-        }
-    });
-    });
-    
     function maxcube_postSaveConfiguration(){
         $.ajax({
             type: "POST",
