@@ -81,7 +81,7 @@ class maxcube extends eqLogic {
     $log = "/dev/null";
     if (config::byKey('debug', 'maxcube') == "1")
       $log = $path . "/../../log/maxcube_debug";
-    $cmd = "cd " . $path . "/resources/maxcube.js && bash daemon.sh start " . $log . " " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state ". config::byKey('debug', 'maxcube');
+    $cmd = "cd " . $path . "/resources/maxcube.js && bash daemon.sh start " . $log . " " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state,mode ". config::byKey('debug', 'maxcube');
     log::add('maxcube', 'debug', $cmd);
     shell_exec($cmd);
   }
@@ -240,6 +240,30 @@ class maxcube extends eqLogic {
         }
         $statelogic->event($device["state"] == "closed");
       }
+      
+      if ($devicetype == "WT" || $devicetype = "RT") {
+        $stateid = "mode";
+        $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
+        if (!is_object($statelogic)) {
+          $cmd = new maxcubeCmd();
+          $cmd->setEventOnly(1);
+          $cmds = $elogic->getCmd();
+          $order = count($cmds);
+          $cmd->setOrder($order);
+          $cmd->setEqLogic_id($elogic->getId());
+          $cmd->setEqType('maxcube');
+          $cmd->setLogicalId($stateid);
+          $cmd->setType('info');
+          $cmd->setSubType('string');
+          $cmd->setTemplate("dashboard","window" );
+          $cmd->setTemplate("mobile","window" );
+          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setName("Mode");
+          $cmd->save();
+          $statelogic = $cmd;
+        }
+        $statelogic->event($device["state"] == "closed");
+      }
     }
     
     if ($thermostat != "") {
@@ -308,6 +332,11 @@ class maxcube extends eqLogic {
         case "state":
           $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), "sensor");
           $statelogic->event(init("value") == "closed");
+          break;
+        case "mode":
+          $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), "mode");
+          if ($statelogic)
+            $statelogic->event(init("value"));
           break;
         case "battery_low":
           $elogic->batteryStatus(init("value") == "false" ? 100 : 0);
