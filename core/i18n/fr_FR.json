@@ -3,6 +3,12 @@
         "Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV\/eQ-3\/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.": "Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV\/eQ-3\/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.",
         "Aucune": "Aucune"
     },
+    "plugins\/maxcube\/plugin_info\/configuration.php": {
+        "Général": "Général",
+        "IP du MaxCube": "IP du MaxCube",
+        "Port du MaxCube (62910 par défaut)": "Port du MaxCube (62910 par défaut)",
+        "Port socket interne (7767 par défaut)": "Port socket interne (7767 par défaut)"
+    },
     "plugins\/maxcube\/desktop\/php\/maxcube.php": {
         "Ajouter un maxcube": "Ajouter un maxcube",
         "Rechercher": "Rechercher",
@@ -48,11 +54,5 @@
         "Min": "Min",
         "Max": "Max",
         "Tester": "Tester"
-    },
-    "plugins\/maxcube\/plugin_info\/configuration.php": {
-        "Général": "Général",
-        "IP du MaxCube": "IP du MaxCube",
-        "Port du MaxCube (62910 par défaut)": "Port du MaxCube (62910 par défaut)",
-        "Port socket interne (7767 par défaut)": "Port socket interne (7767 par défaut)"
     }
 }
