@@ -15,13 +15,13 @@ if (!isConnect()) {
     <fieldset>
         <legend>{{Général}}</legend>
         <div class="form-group expertModeVisible">
-            <label class="col-lg-4 control-label">{{IP du MaxCube}}</label>
+            <label class="col-lg-4 control-label">{{IP des MaxCube (séparés par des ,)}}</label>
             <div class="col-lg-2">
                 <input class="configKey form-control" data-l1key="maxcube_ip" value='192.168.0.11' />
             </div>
         </div>
         <div class="form-group expertModeVisible">
-            <label class="col-lg-4 control-label">{{Port du MaxCube (62910 par défaut)}}</label>
+            <label class="col-lg-4 control-label">{{Port des MaxCube (62910 par défaut)}}</label>
             <div class="col-lg-2">
                 <input class="configKey form-control" data-l1key="maxcube_port" value='62910' />
             </div>

@@ -7,7 +7,7 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class maxcube extends eqLogic {
-  public static $_excludeOnSendPlugin = array("node_modules", ".git", ".gitignore");
+  public static $_excludeOnSendPlugin = array("node_modules", ".git", ".gitignore", ".DS_Store", ".gitmodules");
 
   public static $_devicetypes = array("1" => "RT", "2" => "RT", "3" => "WT", "4" => "WS");
 
@@ -262,49 +262,21 @@ class maxcube extends eqLogic {
         }
         $statelogic->event($device["mode"]);
 
-        $stateid = "mode_boost";
-        $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
-        if (!is_object($statelogic)) {
-          $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(0);
-          $cmd->setName('Boost');
-          $cmd->setOrder(100);
-          $cmd->setEqLogic_id($elogic->getId());
-          $cmd->setEqType('maxcube');
-          $cmd->setLogicalId($stateid);
-          $cmd->setType('action');
-          $cmd->setSubType('other');
-          $cmd->save();
-        }
-
-        $stateid = "mode_auto";
-        $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
-        if (!is_object($statelogic)) {
-          $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(0);
-          $cmd->setName('Auto');
-          $cmd->setOrder(100);
-          $cmd->setEqLogic_id($elogic->getId());
-          $cmd->setEqType('maxcube');
-          $cmd->setLogicalId($stateid);
-          $cmd->setType('action');
-          $cmd->setSubType('other');
-          $cmd->save();
-        }
-        
-        $stateid = "mode_manual";
-        $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
-        if (!is_object($statelogic)) {
-          $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(0);
-          $cmd->setName('Manual');
-          $cmd->setOrder(101);
-          $cmd->setEqLogic_id($elogic->getId());
-          $cmd->setEqType('maxcube');
-          $cmd->setLogicalId($stateid);
-          $cmd->setType('action');
-          $cmd->setSubType('other');
-          $cmd->save();
+        foreach (array("Boost", "Auto", "Manual", "On", "Off") as $name) {
+          $stateid = "mode_" . strtolower($name);
+          $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
+          if (!is_object($statelogic)) {
+            $cmd = new maxcubeCmd();
+            $cmd->setEventOnly(0);
+            $cmd->setName($name);
+            $cmd->setOrder(100);
+            $cmd->setEqLogic_id($elogic->getId());
+            $cmd->setEqType('maxcube');
+            $cmd->setLogicalId($stateid);
+            $cmd->setType('action');
+            $cmd->setSubType('other');
+            $cmd->save();
+          }
         }
       }
     }
@@ -355,7 +327,7 @@ class maxcube extends eqLogic {
     $method = init("method");
 
     if ($method == "update" && $property != "lastUpdate") {
-      log::add("maxcube", 'debug', "update " . $device["room"]["room_name"] . "/" . $device["device_name"] . " (" . $rf_address . ") " . $property . "=" . init("value"));
+      log::add("maxcube", 'debug', "update " . $device["room_name"] . "/" . $device["device_name"] . " (" . $rf_address . ") " . $property . "=" . init("value"));
       switch ($property) {
         case "setpoint":
           $temp = init("value");
@@ -443,9 +415,11 @@ class maxcube extends eqLogic {
 
   public static function getDevice($rf) {
     foreach (self::getRooms() as $room) {
-      foreach ($room as $device) {
-        if ($device["rf_address"] == $rf)
+      foreach ($room as $room_name => $device) {
+        if ($device["rf_address"] == $rf) {
+          $device["room_name"] = $room_name;
           return $device;
+        }
       }
     }
     return array();
@@ -503,11 +477,11 @@ class maxcubeCmd extends cmd {
         break;
       case "mode_on":
         log::add('maxcube', 'debug', "mode on " . $eqLogic->getConfiguration('rf_address'));
-        maxcube::setManual($eqLogic->getConfiguration('rf_address'), 30.5);
+        maxcube::setCubeSetpoint($eqLogic->getConfiguration('rf_address'), 30.5);
         break;
       case "mode_off":
         log::add('maxcube', 'debug', "mode off " . $eqLogic->getConfiguration('rf_address'));
-        maxcube::setManual($eqLogic->getConfiguration('rf_address'), 4.5);
+        maxcube::setCubeSetpoint($eqLogic->getConfiguration('rf_address'), 4.5);
         break;
       default:
         log::add('maxcube', 'debug', "unknown action " . $this->getLogicalId());

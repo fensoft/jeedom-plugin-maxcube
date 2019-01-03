@@ -132,8 +132,10 @@ $eqLogics = eqLogic::byType('maxcube');
                   <?php
                     foreach (maxcube::getRooms() as $room_name => $room) {
                       if ($room_name != "0")
-                        echo '<option style="font-weight: bold;" value="">&#8594; ' . $room_name . ' &#8592; </option>';
+                        echo '<option style="font-weight: bold;" value="" disabled>&#8594; ' . $room_name . ' &#8592; </option>';
                       foreach ($room as $device) {
+                        if (!in_array($device["device_type"], array(1, 2, 3, 4)) || ($room_name == "0" && $device["device_type"] == "4"))
+                          continue;
                         echo '<option class="fa ' . maxcube::typeToIcon($device["devicetype"]) . '" style="display:block;" value="' . $device["rf_address"] . '">';
                         if ($room_name != "0")
                           echo $room_name . "::";
