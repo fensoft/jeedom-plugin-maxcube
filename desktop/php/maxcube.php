@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType('maxcube');
       <?php foreach ($eqLogics as $eqLogic) { ?>
         <?php
           $device = maxcube::getDevice($eqLogic->getConfiguration('rf_address', ''));
-          if ($device["devicetype"] == "")
+          if (! $device || $device["devicetype"] == "")
             $icon = "error.png";
           else
             $icon = $device["devicetype"] . "/icon.jpg";
@@ -55,16 +55,6 @@ $eqLogics = eqLogic::byType('maxcube');
              <center><?php echo $eqLogic->getHumanName(true, true); ?></center>
           </span>
         </div>
-        <!--<div class="eqLogicDisplayCard cursor" data-eqLogic_id="<?php echo $eqLogic->getId(); ?>" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-          <center>
-            <img src="plugins/maxcube/core/config/devices/<?php echo $icon; ?>" height="105" width="95" />
-          </center>
-          <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;">
-            <center>
-              <?php echo $eqLogic->getHumanName(true, true); ?>
-            </center>
-          </span>
-        </div>-->
       <?php } ?>
     </div>
   </div>
@@ -134,7 +124,7 @@ $eqLogics = eqLogic::byType('maxcube');
                       if ($room_name != "0")
                         echo '<option style="font-weight: bold;" value="" disabled>&#8594; ' . $room_name . ' &#8592; </option>';
                       foreach ($room as $device) {
-                        if (!in_array($device["device_type"], array(1, 2, 3, 4)) || ($room_name == "0" && $device["device_type"] == "4"))
+                        if (! $device || ! in_array("device_type", $device) || !in_array($device["device_type"], array(1, 2, 3, 4)) || ($room_name == "0" && $device["device_type"] == "4"))
                           continue;
                         echo '<option class="fa ' . maxcube::typeToIcon($device["devicetype"]) . '" style="display:block;" value="' . $device["rf_address"] . '">';
                         if ($room_name != "0")

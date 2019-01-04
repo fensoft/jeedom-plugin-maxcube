@@ -33,9 +33,15 @@ if (!isConnect()) {
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label">Mode debug</label>
+            <label class="col-sm-4 control-label">{{Mode debug}}</label>
             <div class="col-sm-2">
                 <input type="checkbox" class="configKey" data-l1key="debug" checked="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">{{Debug}}</label>
+            <div class="col-sm-2">
+                <a class="label label-danger" href="<?php echo network::getNetworkAccess('internal', 'proto:ip') . ":" . config::byKey('socketport', 'maxcube'); ?>/get" target="_blank">{{Voir config JSON}}</a>
             </div>
         </div>
     </fieldset>

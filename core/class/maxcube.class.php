@@ -114,17 +114,22 @@ class maxcube extends eqLogic {
           $cmd = new maxcubeCmd();
           $cmd->setEventOnly(1);
           $cmd->setIsHistorized(1);
-          $cmd->setOrder(count($elogic->getCmd()));
+          $cmd->setOrder(2);
           $cmd->setEqLogic_id($elogic->getId());
           $cmd->setEqType('maxcube');
           $cmd->setLogicalId($setpointinputid);
           $cmd->setName($cmd->getLogicalId());
           $cmd->setType('info');
           $cmd->setSubType('numeric');
-          $cmd->setIsVisible(false);
+          $cmd->setTemplate("dashboard","badge");
+          $cmd->setTemplate("mobile","badge");
+          foreach (array("showStatsOndashboard" => 0, "showStatsOnplan" => 0, "showStatsOnview" => 0, "showStatsOnmobile" => 0, "showNameOndashboard" => 0, "showNameOnplan" => 0, "showNameOnview" => 0, "showNameOnmobile" => 0, "forceReturnLineAfter" => 1) as $key => $val)
+            $cmd->setDisplay($key, $val);
+          $cmd->setIsVisible(true);
           $cmd->save();
           $setpointinputlogic = $cmd;
         }
+        $setpointinputlogic->event($device["setpoint"]);
 
         $setpointid = "setpoint";
         $setpointlogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $setpointid);
@@ -132,8 +137,7 @@ class maxcube extends eqLogic {
           $cmd = new maxcubeCmd();
           $cmd->setEventOnly(0);
           $cmds = $elogic->getCmd();
-          $order = count($cmds);
-          $cmd->setOrder($order);
+          $cmd->setOrder(1);
           $cmd->setEqLogic_id($elogic->getId());
           $cmd->setEqType('maxcube');
           $cmd->setLogicalId($setpointid);
@@ -143,16 +147,16 @@ class maxcube extends eqLogic {
           $cmd->setConfiguration('maxValue', "30");
           $cmd->setConfiguration('updateCmdToValue', "#slider#");
           $cmd->setConfiguration('value', "15");
-          $cmd->setTemplate("dashboard","thermostat" );
-          $cmd->setTemplate("mobile","thermostat" );
-          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setTemplate("dashboard","default");
+          $cmd->setTemplate("mobile","default");
+          foreach (array("showNameOndashboard" => 0, "showNameOnplan" => 0, "showNameOnview" => 0, "showNameOnmobile" => 0, "forceReturnLineAfter" => 1) as $key => $val)
+            $cmd->setDisplay($key, $val);
           $cmd->setName("SetPoint");
           $cmd->setValue($setpointinputlogic->getId());
           $cmd->setConfiguration("updateCmdId", $setpointinputlogic->getId());
           $cmd->save();
           $setpointlogic = $cmd;
         }
-        $setpointinputlogic->event($device["setpoint"]);
       }
 
       if ($devicetype == "WT" || $devicetype == "RT") {
@@ -174,12 +178,10 @@ class maxcube extends eqLogic {
           $cmd->setType('info');
           $cmd->setUnite('°C');
           $cmd->setSubType('numeric');
-          if ($thermostat != "")
-            $cmd->setTemplate("dashboard","badge" );
-          else
-            $cmd->setTemplate("dashboard","thermometre" );
-          $cmd->setTemplate("mobile","badge" );
-          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setTemplate("dashboard","default");
+          $cmd->setTemplate("mobile","default");
+          foreach (array("forceReturnLineAfter" => 1, "showStatsOndashboard" => 0, "showStatsOnplan" => 0, "showStatsOnview" => 0, "showStatsOnmobile" => 0) as $key => $val)
+            $cmd->setDisplay($key, $val);
           $cmd->setName("Temp");
           $cmd->save();
           $templogic = $cmd;
@@ -205,9 +207,10 @@ class maxcube extends eqLogic {
           $cmd->setType('info');
           $cmd->setUnite('%');
           $cmd->setSubType('numeric');
-          $cmd->setTemplate("dashboard","badge" );
-          $cmd->setTemplate("mobile","badge" );
-          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setTemplate("dashboard","badge");
+          $cmd->setTemplate("mobile","badge");
+          foreach (array("showStatsOndashboard" => 0, "showStatsOnplan" => 0, "showStatsOnview" => 0, "showStatsOnmobile" => 0, "forceReturnLineAfter" => 1) as $key => $val)
+            $cmd->setDisplay($key, $val);
           $cmd->setName("Valve");
           $cmd->save();
           $valvelogic = $cmd;
@@ -229,9 +232,10 @@ class maxcube extends eqLogic {
           $cmd->setLogicalId($stateid);
           $cmd->setType('info');
           $cmd->setSubType('binary');
-          $cmd->setTemplate("dashboard","window" );
-          $cmd->setTemplate("mobile","window" );
-          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setTemplate("dashboard","window");
+          $cmd->setTemplate("mobile","window");
+          foreach (array("showNameOndashboard" => 0, "showNameOnplan" => 0, "showNameOnview" => 0, "showNameOnmobile" => 0, "forceReturnLineAfter" => 1) as $key => $val)
+            $cmd->setDisplay($key, $val);
           $cmd->setName("Window Sensor");
           $cmd->save();
           $statelogic = $cmd;
@@ -253,9 +257,10 @@ class maxcube extends eqLogic {
           $cmd->setLogicalId($stateid);
           $cmd->setType('info');
           $cmd->setSubType('string');
-          $cmd->setTemplate("dashboard","window" );
-          $cmd->setTemplate("mobile","window" );
-          $cmd->setDisplay('parameters',array('displayName' => 1));
+          $cmd->setTemplate("dashboard","window");
+          $cmd->setTemplate("mobile","window");
+          foreach (array("forceReturnLineAfter" => 1) as $key => $val)
+            $cmd->setDisplay($key, $val);
           $cmd->setName("Mode");
           $cmd->save();
           $statelogic = $cmd;
