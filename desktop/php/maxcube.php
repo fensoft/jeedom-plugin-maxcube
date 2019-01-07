@@ -124,7 +124,7 @@ $eqLogics = eqLogic::byType('maxcube');
                       if ($room_name != "0")
                         echo '<option style="font-weight: bold;" value="" disabled>&#8594; ' . $room_name . ' &#8592; </option>';
                       foreach ($room as $device) {
-                        if (! $device || ! in_array("device_type", $device) || !in_array($device["device_type"], array(1, 2, 3, 4)) || ($room_name == "0" && $device["device_type"] == "4"))
+                        if (! $device || (array_key_exists("device_type", $device) && !in_array($device["device_type"], array(1, 2, 3, 4))) || ($room_name == "0" && $device["device_type"] == "4"))
                           continue;
                         echo '<option class="fa ' . maxcube::typeToIcon($device["devicetype"]) . '" style="display:block;" value="' . $device["rf_address"] . '">';
                         if ($room_name != "0")
