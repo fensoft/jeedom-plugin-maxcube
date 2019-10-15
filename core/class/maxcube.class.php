@@ -7,7 +7,7 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class maxcube extends eqLogic {
-  public static $_excludeOnSendPlugin = array("node_modules", ".git", ".gitignore", ".DS_Store", ".gitmodules");
+  public static $_excludeOnSendPlugin = array("node_modules", ".git", ".gitignore", ".DS_Store", ".gitmodules", "npm-debug.log", "pushtranslations.sh", "npm-cache", ".npmrc");
 
   public static $_devicetypes = array("1" => "RT", "2" => "RT", "3" => "WT", "4" => "WS");
 
@@ -332,7 +332,7 @@ class maxcube extends eqLogic {
     $method = init("method");
 
     if ($method == "update" && $property != "lastUpdate") {
-      log::add("maxcube", 'debug', "update " . $device["room_name"] . "/" . $device["device_name"] . " (" . $rf_address . ") " . $property . "=" . init("value"));
+      log::add("maxcube", 'debug', "update " . $device["room_name"] . "/" . $device["device_name"] . " (" . $rf_address . ") " . $property . "=" . init("value") . "; thermostat is " . $thermostat);
       switch ($property) {
         case "setpoint":
           $temp = init("value");
@@ -345,7 +345,8 @@ class maxcube extends eqLogic {
             $setpointlogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), "setpoint_event");
             $setpointlogic->event($temp);
           } else {
-            maxcubeCmd::byEqLogicIdAndLogicalId($thermostat, "order")->event($temp);
+            $cmdo = maxcubeCmd::byEqLogicIdAndLogicalId($thermostat, "order");
+            $cmdo->event($temp);
           }
           break;
         case "temp":
@@ -468,12 +469,14 @@ class maxcubeCmd extends cmd {
         maxcube::setCubeSetpoint($eqLogic->getConfiguration('rf_address'), $_options["slider"]);
         break;
       case "mode_boost":
+        $setpoint = cmd::byEqLogicIdAndLogicalId($eqLogic->getId(), "setpoint_event")->execCmd();
         log::add('maxcube', 'debug', "boost " . $eqLogic->getConfiguration('rf_address'));
-        maxcube::setBoost($eqLogic->getConfiguration('rf_address'), 0);
+        maxcube::setBoost($eqLogic->getConfiguration('rf_address'), $setpoint);
         break;
       case "mode_auto":
+        $setpoint = cmd::byEqLogicIdAndLogicalId($eqLogic->getId(), "setpoint_event")->execCmd();
         log::add('maxcube', 'debug', "auto " . $eqLogic->getConfiguration('rf_address'));
-        maxcube::setAuto($eqLogic->getConfiguration('rf_address'), 0);
+        maxcube::setAuto($eqLogic->getConfiguration('rf_address'), $setpoint);
         break;
       case "mode_manual":
         $setpoint = cmd::byEqLogicIdAndLogicalId($eqLogic->getId(), "setpoint_event")->execCmd();
