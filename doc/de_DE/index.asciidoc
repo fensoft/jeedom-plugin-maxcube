@@ -1,0 +1,64 @@
+== Description
+
+Ce plugin permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV/eQ-3/Conrad compatible Max! Cube.
+
+Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.
+
+== Comment configurer le plugin ?
+
+* S'assurer d'avoir un nodejs récent (supérieur à v5.10)
+* Le logiciel max! d'origine doit être eteint y compris dans la barre de notification windows (un seul logiciel ne peux se connecter simultanément au cube)
+* Remplir l'ip du plugin et les ports par défaut dans la page de configuration du plugin 
+* Ajouter le périphérique, bien choisir le bon "objet" associé au périphérique nouvellement ajouté image::../images/objet_maxcube.png[]
+* Si vous voulez associer un thermostat maxcube à un thermostat jeedom (du plugin thermostat): ../images/thermostat.png[]
+
+== Où acheter ?
+
+Ces devices sont livrés en kit "ARR" ou préfabriqué:
+
+* La passerelle 868 <=> Ethernet à 40€: http://www.elv.de/max-cube-lan-gateway-arr-bausatz.html
+* La valve à 20€: http://www.elv.de/max-heizkoerperthermostat-arr-bausatz.html
+* Le contacteur de fenêtres à 15€: http://www.elv.de/max-fensterkontakt-arr.html
+* Le thermostat ambiant à 20€: http://www.elv.de/max-wandthermostat-arr-bausatz-1.html
+
+image::../images/bom_fensoft.png[]
+
+Tout est fourni en kits, j'ai mis 8h pour monter mes 26 devices.
+Sinon, prévoir 20% plus cher pour avoir tout monté.
+
+== Exemple
+
+* Montage d'un thermostat
+
+image::../images/thermostat.jpg[]
+
+* Valve posée
+
+image::../images/valve.png[]
+
+* Montage d'un window sensor (livré avec boitiers blanc et marron)
+
+image::../images/window.png[]
+
+== Screenshots
+
+image::../images/devices_fensoft.png[]
+image::../images/salon_fensoft.png[]
+
+== Avis/FAQ
+
+Ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.
+
+Ces valves sont compatible avec un paquet de corps thermostatique, en particulier les danfoss RA, RAV, RAVL. Je conseille d'ailleurs vivement d'avoir des corps danfoss, ce sont les meilleurs, une grande marque réputée et bizarrement moins chers que le "noname" dans les magasins de bricolage type "bricodepot" (j'ai payé les miens environ 20€ pièce + 4h de main d'oeuvre plombier pour 9 radiateurs).
+
+Un petit truc à savoir sur le 868mhz: chaque device ne peux emmètre plus de 36sec/heure (1% duty cycle). Donc il faut faire attention pendant ses tests de ne pas "bourinner" pour rien, sous peine de devoir attendre un certain temps avant de pouvoir émettre de nouveau ;-) Un reboot suffit à corriger ça.
+
+A noter qu'il est préférable d'avoir un thermostat par pièces si vous voulez récupérer les informations de température en temps réel (la valve a un thermomètre interne mais n'envoie pas l'information assez régulièrement pour que ce soit fiable).
+
+== Configuration
+
+Sur chacun de ces devices, on peux récupérer:
+
+* Valve => Pourcentage d'ouverture de la valve, référence, dernière température envoyée (PAS TEMPS REEL, valeur lors du dernier déplacement de la valve)
+* Contacteur de fenêtre => fenêtre ouverte/fermée
+* Thermostat => référence, température ambiante temps réél
