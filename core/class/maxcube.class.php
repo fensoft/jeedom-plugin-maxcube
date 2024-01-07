@@ -78,7 +78,7 @@ class maxcube extends eqLogic {
       message::add("maxcube", " {{IP interne de jeedom non configurée}}");
 
     $path = realpath(dirname(__FILE__) . '/../..');
-    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api') . "&type=maxcube&method=update";
+    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api',__CLASS__) . "&type=maxcube&method=update";
     $log = "/dev/null";
     if (config::byKey('debug', 'maxcube') == "1")
       $log = $path . "/../../log/maxcube_debug";
@@ -112,7 +112,6 @@ class maxcube extends eqLogic {
         $setpointinputlogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $setpointinputid);
         if (!is_object($setpointinputlogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(1);
           $cmd->setIsHistorized(1);
           $cmd->setOrder(2);
           $cmd->setEqLogic_id($elogic->getId());
@@ -135,7 +134,6 @@ class maxcube extends eqLogic {
         $setpointlogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $setpointid);
         if (!is_object($setpointlogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(0);
           $cmds = $elogic->getCmd();
           $cmd->setOrder(1);
           $cmd->setEqLogic_id($elogic->getId());
@@ -164,7 +162,6 @@ class maxcube extends eqLogic {
         $templogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $tempid);
         if (!is_object($templogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(1);
           if ($thermostat == "")
             $cmd->setIsHistorized(1);
           $cmds = $elogic->getCmd();
@@ -194,7 +191,6 @@ class maxcube extends eqLogic {
         $valvelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $valveid);
         if (!is_object($valvelogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(1);
           $cmd->setIsHistorized(1);
           $cmds = $elogic->getCmd();
           $order = count($cmds);
@@ -223,7 +219,6 @@ class maxcube extends eqLogic {
         $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
         if (!is_object($statelogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(1);
           $cmds = $elogic->getCmd();
           $order = count($cmds);
           $cmd->setOrder($order);
@@ -248,7 +243,6 @@ class maxcube extends eqLogic {
         $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
         if (!is_object($statelogic)) {
           $cmd = new maxcubeCmd();
-          $cmd->setEventOnly(1);
           $cmds = $elogic->getCmd();
           $order = count($cmds);
           $cmd->setOrder($order);
@@ -272,7 +266,6 @@ class maxcube extends eqLogic {
           $statelogic = maxcubeCmd::byEqLogicIdAndLogicalId($elogic->getId(), $stateid);
           if (!is_object($statelogic)) {
             $cmd = new maxcubeCmd();
-            $cmd->setEventOnly(0);
             $cmd->setName($name);
             $cmd->setOrder(100);
             $cmd->setEqLogic_id($elogic->getId());
