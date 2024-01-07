@@ -78,7 +78,7 @@ class maxcube extends eqLogic {
       message::add("maxcube", " {{IP interne de jeedom non configurée}}");
 
     $path = realpath(dirname(__FILE__) . '/../..');
-    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api',__CLASS__) . "&type=maxcube&method=update";
+    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api',__CLASS__) . "&plugin=maxcube&type=event&method=update";
     $log = "/dev/null";
     if (config::byKey('debug', 'maxcube') == "1")
       $log = $path . "/../../log/maxcube_debug";
