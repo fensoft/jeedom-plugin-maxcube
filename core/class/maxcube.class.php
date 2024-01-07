@@ -390,7 +390,9 @@ class maxcube extends eqLogic {
   }
 
   public static function getRooms() {
-    $url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/get";
+    $socketport = trim(config::byKey('socketport', __CLASS__));
+    if($socketport == "") $socketport = 7767;
+    $url = "http://" . config::byKey('internalAddr') . ":$socketport/get";
     return json_decode(file_get_contents($url), true);
   }
 
@@ -399,7 +401,9 @@ class maxcube extends eqLogic {
     $device = self::getDevice($rf_address);
     if ($device["room_id"] != "")
       $rf_address = $device["group_rf_address"];
-    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/set/" . $rf_address . "/" . $value), true);
+    $socketport = trim(config::byKey('socketport', __CLASS__));
+    if($socketport == "") $socketport = 7767;
+    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') . ":" .$socketport ."/set/" . $rf_address . "/" . $value), true);
   }
 
   public static function setBoost($rf_address, $value) {
@@ -407,7 +411,9 @@ class maxcube extends eqLogic {
     $device = self::getDevice($rf_address);
     if ($device["room_id"] != "")
       $rf_address = $device["group_rf_address"];
-    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/boost/" . $rf_address . "/" . $value), true);
+    $socketport = trim(config::byKey('socketport', __CLASS__));
+    if($socketport == "") $socketport = 7767;
+    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') .":" .$socketport ."/boost/" .$rf_address ."/" .$value), true);
   }
 
   public static function setAuto($rf_address, $value) {
@@ -415,7 +421,9 @@ class maxcube extends eqLogic {
     $device = self::getDevice($rf_address);
     if ($device["room_id"] != "")
       $rf_address = $device["group_rf_address"];
-    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'maxcube') . "/auto/" . $rf_address . "/" . $value), true);
+    $socketport = trim(config::byKey('socketport', __CLASS__));
+    if($socketport == "") $socketport = 7767;
+    return json_decode(file_get_contents("http://" . config::byKey('internalAddr') .":" .$socketport ."/auto/" .$rf_address ."/" .$value), true);
   }
 
   public static function getDevice($rf) {
