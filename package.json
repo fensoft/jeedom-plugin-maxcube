@@ -1,0 +1,14 @@
+{
+  "name": "maxcube",
+  "version": "0.0.1",
+  "description": "eQ-3 Max! Cube interface webservice",
+  "name": "maxcube",
+  "dependencies": {
+    "express": "",
+    "moment": "",
+    "maxcube": "git+https://github.com/fensoft/maxcube.git",
+    "request": "",
+    "sleep": "",
+    "utf8": ""
+  }
+}
