@@ -4,7 +4,7 @@
 	"description" : "Permet de récupérer les informations de température, référence et d'ouverture de fenêtres à partir des vannes ELV/eQ-3/Conrad compatible Max! Cube. Pour info, ces thermostat sont plutôt fiable, avec un protocole ouvert et parmi les moins cher du marché.",
 	"licence" : "proprietary",
 	"author" : "fensoft",
-	"require" : "3.0",
+	"require" : "4.2",
 	"category" : "automation protocol",
 	"hasDependency" : 1,
 	"hasOwnDeamon" : 1,
