@@ -1,13 +1,13 @@
 {
-  "name": "maxcube",
+  "name": "maxcubeservice",
   "version": "0.0.1",
   "description": "eQ-3 Max! Cube interface webservice",
-  "name": "maxcube",
+  "main": "maxcubeservice.js",
   "dependencies": {
-    "express": "",
-    "moment": "",
     "maxcube": "git+https://github.com/fensoft/maxcube.git",
+    "express": "",
     "request": "",
+    "moment": "",
     "sleep": "",
     "utf8": ""
   }
