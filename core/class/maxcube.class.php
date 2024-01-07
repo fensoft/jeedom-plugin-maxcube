@@ -72,18 +72,24 @@ class maxcube extends eqLogic {
   }
 
   public static function deamon_start() {
-    if (config::byKey('maxcube_ip', 'maxcube') == "" || config::byKey('maxcube_port', 'maxcube') == "" || config::byKey('socketport', 'maxcube') == "")
-      message::add("maxcube", " {{Erreur de configuration: cube non configuré}}");
-    if (network::getNetworkAccess('internal', 'proto:ip:port:comp') == "")
-      message::add("maxcube", " {{IP interne de jeedom non configurée}}");
-
-    $path = realpath(dirname(__FILE__) . '/../..');
-    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') . '/core/api/jeeApi.php?api=' . config::byKey('api',__CLASS__) . "&plugin=maxcube&type=event&method=update";
+    $maxcube_port = trim(config::byKey('maxcube_port', __CLASS__));
+    if($maxcube_port == "") $maxcube_port = 62910;
+    $socketport = trim(config::byKey('socketport', __CLASS__));
+    if($socketport == "") $socketport = 7767;
+    $maxcube_ip = trim(config::byKey('maxcube_ip', __CLASS__));
+    if($maxcube_ip == "") {
+      message::add(__CLASS__, "{{Erreur de configuration: Adresse IP cube non configurée}}");
+      return;
+    }
+    if(network::getNetworkAccess('internal', 'proto:ip:port:comp') == "")
+      message::add(__CLASS__, "{{IP interne de jeedom non configurée}}");
+    $path = realpath(__DIR__ . '/../..');
+    $url = network::getNetworkAccess('internal', 'proto:ip:port:comp') .'/core/api/jeeApi.php?apikey=' .config::byKey('api',__CLASS__) ."&plugin=maxcube&type=event&method=update";
     $log = "/dev/null";
-    if (config::byKey('debug', 'maxcube') == "1")
+    if (config::byKey('debug', __CLASS__) == "1")
       $log = $path . "/../../log/maxcube_debug";
-    $cmd = "cd " . $path . "/resources/maxcube.js && bash daemon.sh start " . $log . " " . config::byKey('maxcube_ip', 'maxcube') . " " . config::byKey('maxcube_port', 'maxcube') . " " . config::byKey('socketport', 'maxcube') . " - \"" . $url . "\" temp,valve,setpoint,link_error,battery_low,error,valid,state,mode,panel_locked ". config::byKey('debug', 'maxcube');
-    log::add('maxcube', 'debug', $cmd);
+    $cmd = "cd " .$path ."/resources/maxcube.js && bash daemon.sh start $log $maxcube_ip $maxcube_port $socketport - \"" .$url ."\" temp,valve,setpoint,link_error,battery_low,error,valid,state,mode,panel_locked ".config::byKey('debug', __CLASS__);
+    log::add(__CLASS__, 'debug', $cmd);
     shell_exec($cmd);
   }
 
