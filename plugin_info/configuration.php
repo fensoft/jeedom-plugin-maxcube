@@ -41,7 +41,7 @@ if (!isConnect()) {
         <div class="form-group">
             <label class="col-sm-4 control-label">{{Debug}}</label>
             <div class="col-sm-2">
-                <a class="label label-danger" href="<?php echo network::getNetworkAccess('internal', 'proto:ip') . ":" . config::byKey('socketport', 'maxcube'); ?>/get" target="_blank">{{Voir config JSON}}</a>
+                <a class="label label-danger" href="<?php $socketport = trim(config::byKey('socketport', 'maxcube')); echo network::getNetworkAccess('internal', 'proto:ip') . ":" .(($socketport=="")?7767:$socketport)?>/get" target="_blank">{{Voir config JSON}}</a>
             </div>
         </div>
     </fieldset>
