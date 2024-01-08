@@ -3,21 +3,20 @@ ME=`cd $(dirname $0); pwd`
 
 touch /tmp/maxcube_in_progress
 echo 0 > /tmp/maxcube_in_progress
-echo "Installing maxcube dependencies"
+echo "************************* "
+echo "  $(date +'%d/%m/%Y %H:%M:%S') Installation des dépendances"
+echo "************************* "
 
 sudo apt-get install -y git
 echo 10 > /tmp/maxcube_in_progress
 BIN=`which node`
 if [ "$BIN" = "" ]; then
-  BIN=`which nodejs`
-fi
-if [ "$BIN" = "" ]; then
-  echo "No nodejs found"
+  echo "Node not found"
   major=0
 else
   actual=`$BIN -v`
   major=`$BIN -v | sed "s#v##" | sed "s#[.].*##"`
-  echo "Current version: ${actual} (major $major)"
+  echo "Node version: ${actual} (major $major)"
 fi
 
 echo 30 > /tmp/maxcube_in_progress
@@ -35,18 +34,24 @@ elif [ $major -lt 8 ]; then
   sudo apt-get install -y nodejs npm
 fi
 
-BIN=`which node`
 if [ "$BIN" = "" ]; then
-  BIN=`which nodejs`
+  BIN=`which node`
+  new=`$BIN -v`;
+  echo "New node version installed: ${new}"
 fi
-new=`$BIN -v`;
-echo "new version installed: ${new}"
 
 echo 50 > /tmp/maxcube_in_progress
 git --version
+cd $ME
+sudo rm -rf npm-cache
 cd $ME/maxcube.js
 sudo rm -rf node_modules
+sudo rm -f package-lock.json
 echo "cache = \"$ME/npm-cache\"" > .npmrc
+echo "Starting npm install"
 npm i
 echo 100 > /tmp/maxcube_in_progress
+echo "************************* "
+echo "  $(date +'%d/%m/%Y %H:%M:%S') Installation terminée"
+echo "************************* "
 rm /tmp/maxcube_in_progress
